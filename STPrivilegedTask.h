@@ -36,6 +36,11 @@
 #define STPrivilegedTaskDidTerminateNotification        @"STPrivilegedTaskDidTerminateNotification"
 #define TMP_STDERR_TEMPLATE                             @".authStderr.XXXXXX"
 
+// Define new error value for when AuthorizationExecuteWithPrivilleges no longer
+// exists anyplace. Rather than defining a new enum, we just create a global
+// constant
+extern const OSStatus errAuthorizationFnNoLongerExists;
+
 @interface STPrivilegedTask : NSObject 
 {
     NSArray         *arguments;
