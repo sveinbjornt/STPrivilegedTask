@@ -51,15 +51,17 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 }
 
 -(void)dealloc
-{    
+{
+#if !__has_feature(objc_arc)
     [launchPath release];
     [arguments release];
     [cwd release];
     
     if (outputFileHandle != NULL)
         [outputFileHandle release];
-    
+
     [super dealloc];
+#endif
 }
 
 -(id)initWithLaunchPath: (NSString *)path arguments:  (NSArray *)args
@@ -84,7 +86,11 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 +(STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args
 {
-    STPrivilegedTask *task = [[[STPrivilegedTask alloc] initWithLaunchPath: path arguments: args] autorelease];
+    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath: path arguments: args];
+#if !__has_feature(objc_arc)
+    [task autorelease];
+#endif
+    
     [task launch];
     [task waitUntilExit];
     return task;
@@ -92,7 +98,10 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 +(STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path
 {
-    STPrivilegedTask *task = [[[STPrivilegedTask alloc] initWithLaunchPath: path] autorelease];
+    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath: path];
+#if !__has_feature(objc_arc)
+    [task autorelease];
+#endif
     [task launch];
     [task waitUntilExit];
     return task;
@@ -139,20 +148,29 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 -(void)setArguments:(NSArray *)args
 {
+#if !__has_feature(objc_arc)
     [arguments release];
-    arguments = [args retain];
+    [args retain];
+#endif
+    arguments = args;
 }
 
 -(void)setCurrentDirectoryPath:(NSString *)path
 {
+#if !__has_feature(objc_arc)
     [cwd release];
-    cwd = [path retain];
+    [path retain];
+#endif
+    cwd = path;
 }
 
 -(void)setLaunchPath:(NSString *)path
 {
+#if !__has_feature(objc_arc)
     [launchPath release];
-    launchPath = [path retain];
+    [path retain];
+#endif
+    launchPath = path;
 }
 
 # pragma mark -
