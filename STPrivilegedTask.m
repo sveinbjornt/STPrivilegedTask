@@ -41,7 +41,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 {
     if ((self = [super init])) 
     {
-        launchPath = [[NSString alloc] initWithString: @""];
+        launchPath = @"";
         cwd = [[NSString alloc] initWithString: [[NSFileManager defaultManager] currentDirectoryPath]];
         arguments = [[NSArray alloc] init];
         isRunning = NO;
