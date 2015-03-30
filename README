@@ -1,1 +1,3 @@
-An NSTask-like wrapper around AuthorizationExecuteWithPrivileges() to run shell commands with root privileges via Cocoa.
+#STPrivilegedTask - Objective C class
+
+An NSTask-like wrapper around AuthorizationExecuteWithPrivileges() to run shell commands with root privileges in Mac OS X.
