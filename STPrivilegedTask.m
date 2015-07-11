@@ -44,7 +44,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
         cwd = [[NSString alloc] initWithString:[[NSFileManager defaultManager] currentDirectoryPath]];
         arguments = [[NSArray alloc] init];
         isRunning = NO;
-        outputFileHandle = NULL;
+        outputFileHandle = nil;
     }
     return self;
 }
@@ -56,9 +56,9 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     [arguments release];
     [cwd release];
     
-    if (outputFileHandle != NULL)
+    if (outputFileHandle != nil) {
         [outputFileHandle release];
-
+    }
     [super dealloc];
 #endif
 }
@@ -231,11 +231,11 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     
     // first, construct an array of c strings from NSArray w. arguments
     for (int i = 0; i < numberOfArguments; i++) {
-        NSString *theString = arguments[i];
-        NSUInteger stringLength = [theString length];
+        NSString *argString = arguments[i];
+        NSUInteger stringLength = [argString length];
         
         args[i] = malloc((stringLength + 1) * sizeof(char));
-        snprintf(args[i], stringLength + 1, "%s", [theString fileSystemRepresentation]);
+        snprintf(args[i], stringLength + 1, "%s", [argString fileSystemRepresentation]);
     }
     args[numberOfArguments] = NULL;
     
