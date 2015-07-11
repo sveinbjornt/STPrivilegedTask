@@ -2,17 +2,21 @@
 
 An NSTask-like wrapper around AuthorizationExecuteWithPrivileges() in the Security API to run shell commands with root privileges in Mac OS X.
 
-### Example usage
+## Examples
+
+### Create and launch task
 
 ```objective-c
-STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
 
+STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
 [privilegedTask setLaunchPath:@"/usr/bin/touch"];
 NSArray *args = [NSArray arrayWithObject:@"/etc/my_test_file"];
 [privilegedTask setArguments:args];
-[privilegedTask setCurrentDirectoryPath:[[NSBundle mainBundle] resourcePath]];
 
-//set it off
+// this is optional, defaults to /
+// [privilegedTask setCurrentDirectoryPath:[[NSBundle mainBundle] resourcePath]];
+
+// launch it, user is prompted for password
 OSStatus err = [privilegedTask launch];
 if (err != errAuthorizationSuccess) {
 	if (err == errAuthorizationCanceled) {
