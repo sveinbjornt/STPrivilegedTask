@@ -27,7 +27,6 @@
  # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #import <Cocoa/Cocoa.h>
 #import <Carbon/Carbon.h>
 #import <Security/Authorization.h>
