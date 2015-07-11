@@ -76,7 +76,7 @@ Observe STPrivilegedTaskDidTerminateNotification.
 ```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
 
-- (void) privilegedTaskFinished:(NSNotification *)aNotification {
+- (void)privilegedTaskFinished:(NSNotification *)aNotification {
 	// do something
 }
 ```
