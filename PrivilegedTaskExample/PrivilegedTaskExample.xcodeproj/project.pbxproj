@@ -25,6 +25,7 @@
 		F4F1037B1B515A1C00BCAD40 /* STPrivilegedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STPrivilegedTask.m; path = ../../STPrivilegedTask.m; sourceTree = "<group>"; };
 		F4F1037E1B51664C00BCAD40 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		F4F1037F1B5166CF00BCAD40 /* lock-icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "lock-icon.icns"; sourceTree = "<group>"; };
+		F4F103811B516A3500BCAD40 /* STPrivilegedTask.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = STPrivilegedTask.podspec; path = ../../STPrivilegedTask.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				F4F1037E1B51664C00BCAD40 /* README.md */,
+				F4F103811B516A3500BCAD40 /* STPrivilegedTask.podspec */,
 				F4F1037A1B515A1C00BCAD40 /* STPrivilegedTask.h */,
 				F4F1037B1B515A1C00BCAD40 /* STPrivilegedTask.m */,
 			);
