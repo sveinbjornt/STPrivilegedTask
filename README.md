@@ -25,7 +25,7 @@ if (err != errAuthorizationSuccess) {
 
 ### Getting task output
 
-```
+```objective-c
 // ... launch task
 
 [privilegedTask waitUntilExit];
@@ -39,7 +39,7 @@ NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUT
 
 ### Getting output while task runs in background
 
-```
+```objective-c
 
 // ... create and launch task
 
@@ -69,7 +69,7 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 
 Observe STPrivilegedTaskDidTerminateNotification event.
 
-```
+```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
 
 - (void) privilegedTaskFinished:(NSNotification *)aNotification {
