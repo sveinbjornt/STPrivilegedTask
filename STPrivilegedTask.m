@@ -1,7 +1,7 @@
 /*
  #
  # STPrivilegedTask - NSTask-like wrapper around AuthorizationExecuteWithPrivileges
- # Copyright (C) 2009-2011 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
+ # Copyright (C) 2009-2015 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
  #
  # BSD License
  # Redistribution and use in source and binary forms, with or without
@@ -39,10 +39,9 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 - (id)init
 {
-    if ((self = [super init])) 
-    {
+    if ((self = [super init])) {
         launchPath = @"";
-        cwd = [[NSString alloc] initWithString: [[NSFileManager defaultManager] currentDirectoryPath]];
+        cwd = [[NSString alloc] initWithString:[[NSFileManager defaultManager] currentDirectoryPath]];
         arguments = [[NSArray alloc] init];
         isRunning = NO;
         outputFileHandle = NULL;
@@ -64,20 +63,18 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 #endif
 }
 
--(id)initWithLaunchPath: (NSString *)path arguments:  (NSArray *)args
+-(id)initWithLaunchPath:(NSString *)path arguments:(NSArray *)args
 {
-    if ((self = [self initWithLaunchPath: path]))
-    {
-        [self setArguments: args];
+    if ((self = [self initWithLaunchPath:path]))  {
+        [self setArguments:args];
     }
     return self;
 }
 
--(id)initWithLaunchPath: (NSString *)path
+-(id)initWithLaunchPath:(NSString *)path
 {
-    if ((self = [self init]))
-    {
-        [self setLaunchPath: path];
+    if ((self = [self init])) {
+        [self setLaunchPath:path];
     }
     return self;
 }
@@ -86,7 +83,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 +(STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args
 {
-    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath: path arguments: args];
+    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath:path arguments:args];
 #if !__has_feature(objc_arc)
     [task autorelease];
 #endif
@@ -98,7 +95,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 +(STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path
 {
-    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath: path];
+    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath:path];
 #if !__has_feature(objc_arc)
     [task autorelease];
 #endif
@@ -176,20 +173,19 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 # pragma mark -
 
 // return 0 for success
--(int) launch
+-(int)launch
 {
-    OSStatus                err = noErr;
-    short                   i;
-    const char              *toolPath = [launchPath fileSystemRepresentation];
+    OSStatus err = noErr;
+    const char *toolPath = [launchPath fileSystemRepresentation];
     
-    AuthorizationRef        authorizationRef;
-    AuthorizationItem       myItems = {kAuthorizationRightExecute, strlen(toolPath), &toolPath, 0};
-    AuthorizationRights     myRights = {1, &myItems};
-    AuthorizationFlags      flags = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
+    AuthorizationRef authorizationRef;
+    AuthorizationItem myItems = {kAuthorizationRightExecute, strlen(toolPath), &toolPath, 0};
+    AuthorizationRights myRights = {1, &myItems};
+    AuthorizationFlags flags = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
     
-    NSUInteger            argumentsCount = [arguments count];
-    char                    *args[argumentsCount + 1];
-    FILE                    *outputFile;
+    NSUInteger numberOfArguments = [arguments count];
+    char *args[numberOfArguments + 1];
+    FILE *outputFile;
 
     // Create fn pointer to AuthorizationExecuteWithPrivileges in case it doesn't exist
     // in this version of MacOS
@@ -220,27 +216,28 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     
     // create authorization reference
     err = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &authorizationRef);
-    if (err != errAuthorizationSuccess)
+    if (err != errAuthorizationSuccess) {
         return err;
+    }
     
     // pre-authorize the privileged operation
     err = AuthorizationCopyRights(authorizationRef, &myRights, kAuthorizationEmptyEnvironment, flags, NULL);
-    if (err != errAuthorizationSuccess) 
+    if (err != errAuthorizationSuccess) {
         return err;
+    }
     
     // OK, at this point we have received authorization for the task.
     // Let's prepare to launch it
     
     // first, construct an array of c strings from NSArray w. arguments
-    for (i = 0; i < argumentsCount; i++) 
-    {
-        NSString *theString = [arguments objectAtIndex:i];
+    for (int i = 0; i < numberOfArguments; i++) {
+        NSString *theString = arguments[i];
         NSUInteger stringLength = [theString length];
         
         args[i] = malloc((stringLength + 1) * sizeof(char));
         snprintf(args[i], stringLength + 1, "%s", [theString fileSystemRepresentation]);
     }
-    args[argumentsCount] = NULL;
+    args[numberOfArguments] = NULL;
     
     // change to the current dir specified
     char *prevCwd = (char *)getcwd(nil, 0);
@@ -253,24 +250,26 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     chdir(prevCwd);
     
     // free the malloc'd argument strings
-    for (i = 0; i < argumentsCount; i++)
+    for (int i = 0; i < numberOfArguments; i++) {
         free(args[i]);
+    }
     
     // free the auth ref
     AuthorizationFree(authorizationRef, kAuthorizationFlagDefaults);
     
     // we return err if execution failed
-    if (err != errAuthorizationSuccess) 
+    if (err != errAuthorizationSuccess) {
         return err;
-    else
+    } else {
         isRunning = YES;
+    }
     
     // get file handle for the command output
-    outputFileHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(outputFile) closeOnDealloc: YES];
+    outputFileHandle = [[NSFileHandle alloc] initWithFileDescriptor:fileno(outputFile) closeOnDealloc:YES];
     pid = fcntl(fileno(outputFile), F_GETOWN, 0);
     
     // start monitoring task
-    checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval: 0.10 target: self selector:@selector(_checkTaskStatus) userInfo: nil repeats: YES];
+    checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:0.10 target:self selector:@selector(_checkTaskStatus) userInfo:nil repeats:YES];
         
     return err;
 }
@@ -298,10 +297,9 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 {    
     // see if task has terminated
     int mypid = waitpid([self processIdentifier], &terminationStatus, WNOHANG);
-    if (mypid != 0)
-    {
+    if (mypid != 0) {
         isRunning = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName: STPrivilegedTaskDidTerminateNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:STPrivilegedTaskDidTerminateNotification object:self];
         [checkStatusTimer invalidate];
     }
 }
@@ -311,12 +309,13 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 - (NSString *)description
 {
     NSArray *args = [self arguments];
-    NSString *cmd = [self launchPath];
-    int i;
-    for (i = 0; i < [args count]; i++)
-        cmd = [cmd stringByAppendingFormat: @" %@", [args objectAtIndex: i]];
+    NSString *cmd = [[self launchPath] copy];
     
-    return [[super description] stringByAppendingFormat: @" %@", cmd];
+    for (int i = 0; i < [args count]; i++) {
+        cmd = [cmd stringByAppendingFormat:@" %@", args[i]];
+    }
+    
+    return [[super description] stringByAppendingFormat:@" %@", cmd];
 }
 
 @end

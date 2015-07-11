@@ -1,7 +1,7 @@
 /*
  #
  # STPrivilegedTask - NSTask-like wrapper around AuthorizationExecuteWithPrivileges
- # Copyright (C) 2009-2011 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
+ # Copyright (C) 2009-2015 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
  #
  # BSD License
  # Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,10 @@
 #import <Security/Authorization.h>
 #import <Security/AuthorizationTags.h>
 
-#define STPrivilegedTaskDidTerminateNotification        @"STPrivilegedTaskDidTerminateNotification"
-#define TMP_STDERR_TEMPLATE                             @".authStderr.XXXXXX"
+#define STPrivilegedTaskDidTerminateNotification @"STPrivilegedTaskDidTerminateNotification"
+//#define TMP_STDERR_TEMPLATE @".authStderr.XXXXXX"
 
-// Define new error value for when AuthorizationExecuteWithPrivilleges no longer
+// Defines error value for when AuthorizationExecuteWithPrivilleges no longer
 // exists anyplace. Rather than defining a new enum, we just create a global
 // constant
 extern const OSStatus errAuthorizationFnNoLongerExists;
@@ -52,8 +52,8 @@ extern const OSStatus errAuthorizationFnNoLongerExists;
     NSFileHandle    *outputFileHandle;
     NSTimer         *checkStatusTimer;
 }
--(id)initWithLaunchPath: (NSString *)path;
--(id)initWithLaunchPath: (NSString *)path arguments:  (NSArray *)args;
+-(id)initWithLaunchPath:(NSString *)path;
+-(id)initWithLaunchPath:(NSString *)path arguments:  (NSArray *)args;
 +(STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path;
 +(STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
 -(NSArray *)arguments;
