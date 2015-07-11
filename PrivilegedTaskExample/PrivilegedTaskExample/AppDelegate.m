@@ -27,6 +27,7 @@
  */
 
 #import "AppDelegate.h"
+#import "STPrivilegedTask.h"
 
 @interface AppDelegate ()
 
@@ -59,6 +60,33 @@
 
 - (IBAction)runSTPrivilegedTask:(id)sender {
     
+    //initalize task
+    STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
+    
+    NSMutableArray *components = [[[self.commandTextField stringValue] componentsSeparatedByString:@" "] mutableCopy];
+    NSString *launchPath = components[0];
+    [components removeObjectAtIndex:0];
+    
+    [privilegedTask setLaunchPath:launchPath];
+    [privilegedTask setArguments:components];
+    [privilegedTask setCurrentDirectoryPath:[[NSBundle mainBundle] resourcePath]];
+    
+    //set it off
+    OSStatus err = [privilegedTask launch];
+    if (err != errAuthorizationSuccess) {
+        if (err == errAuthorizationCanceled) {
+            return;
+        }  else {
+            NSLog(@"Something went wrong");
+        }
+    }
+    
+    // Success!  Now, start monitoring output file handle for data
+    NSFileHandle *readHandle = [privilegedTask outputFileHandle];
+    NSData *outputData = [readHandle readDataToEndOfFile];
+    NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+    
+    [self.outputTextField setString:outputString];
 }
 
 
