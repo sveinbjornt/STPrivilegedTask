@@ -24,6 +24,8 @@ if (err != errAuthorizationSuccess) {
 	} else {
 	    NSLog(@"Something went wrong");
 	}
+} else {
+	// task successfully launched
 }
 ```
 
@@ -45,7 +47,7 @@ NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUT
 
 ```objective-c
 
-// ... create and launch task
+// ... launch task
 
 NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOutputData:) name:NSFileHandleReadCompletionNotification object:readHandle];
