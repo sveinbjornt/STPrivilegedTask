@@ -2,6 +2,8 @@
 
 An NSTask-like wrapper around AuthorizationExecuteWithPrivileges() in the Security API to run shell commands with root privileges in Mac OS X.
 
+Created a long time ago. Has been updated to support ARC.
+
 ## Examples
 
 ### Create and launch task
