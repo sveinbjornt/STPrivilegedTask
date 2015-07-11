@@ -2,7 +2,7 @@
 
 An NSTask-like wrapper around AuthorizationExecuteWithPrivileges() in the Security API to run shell commands with root privileges in Mac OS X.
 
-Example of usage:
+### Example usage
 
 ```objective-c
 STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
@@ -21,6 +21,14 @@ if (err != errAuthorizationSuccess) {
 	    NSLog(@"Something went wrong");
 	}
 }
+```
+
+### Getting task output
+
+```
+// ... launch task
+
+[privilegedTask waitUntilExit];
 
 // Read output file handle for data
 NSFileHandle *readHandle = [privilegedTask outputFileHandle];
@@ -28,6 +36,48 @@ NSData *outputData = [readHandle readDataToEndOfFile];
 NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
 
 ```
+
+### Getting output while task runs in background
+
+```
+
+// ... create and launch task
+
+NSFileHandle *readHandle = [privilegedTask outputFileHandle];
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOutputData:) name:NSFileHandleReadCompletionNotification object:readHandle];
+[readHandle readInBackgroundAndNotify];
+
+// ...
+
+- (void)getOutputData:(NSNotification *)aNotification {
+    //get data from notification
+    NSData *data = [[aNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    
+    //make sure there's actual data
+    if ([data length]) {
+        // do something with the data
+        
+        // go read more data in the background
+        [[aNotification object] readInBackgroundAndNotify];
+    } else {
+        // do something else
+    }
+}
+```
+
+### Notification when task terminates
+
+Observe STPrivilegedTaskDidTerminateNotification event.
+
+```
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
+
+- (void) privilegedTaskFinished:(NSNotification *)aNotification {
+	// do something
+}
+```
+
+
 
 # BSD License
 
