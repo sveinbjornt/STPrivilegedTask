@@ -67,7 +67,7 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 
 ### Notification when task terminates
 
-Observe STPrivilegedTaskDidTerminateNotification event.
+Observe STPrivilegedTaskDidTerminateNotification.
 
 ```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
