@@ -1,24 +1,25 @@
 # STPrivilegedTask - Objective C class
 
-An NSTask-like wrapper around AuthorizationExecuteWithPrivileges() in the Security API to run shell commands with root privileges in Mac OS X.
+An NSTask-like wrapper around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) in the Security API to run shell commands with root privileges in Mac OS X.
 
-Created a long time ago. It has been updated to support ARC and is available via <a href="https://cocoapods.org">CocoaPods</a>.
+Created a long time ago. It has now been updated to support ARC and is available via <a href="https://cocoapods.org">CocoaPods</a>.
 
 ## Examples
 
 ### Create and launch task
 
 ```objective-c
-
+// Create task
 STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
 [privilegedTask setLaunchPath:@"/usr/bin/touch"];
 NSArray *args = [NSArray arrayWithObject:@"/etc/my_test_file"];
 [privilegedTask setArguments:args];
 
-// this is optional, defaults to /
-// [privilegedTask setCurrentDirectoryPath:[[NSBundle mainBundle] resourcePath]];
+// Setting working directory is optional, defaults to /
+// NSString *path = [[NSBundle mainBundle] resourcePath];
+// [privilegedTask setCurrentDirectoryPath:path];
 
-// launch it, user is prompted for password
+// Launch it, user is prompted for password
 OSStatus err = [privilegedTask launch];
 if (err != errAuthorizationSuccess) {
 	if (err == errAuthorizationCanceled) {
@@ -27,9 +28,10 @@ if (err != errAuthorizationSuccess) {
 	    NSLog(@"Something went wrong");
 	}
 } else {
-	// task successfully launched
+	NSLog(@"Task successfully launched");
 }
 ```
+See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h) for a list of possible error codes.
 
 ### Getting task output
 
@@ -73,9 +75,9 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 }
 ```
 
-### Notification when task terminates
+### Task termination
 
-Observe STPrivilegedTaskDidTerminateNotification.
+You can observe STPrivilegedTaskDidTerminateNotification:
 
 ```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
@@ -85,7 +87,26 @@ Observe STPrivilegedTaskDidTerminateNotification.
 }
 ```
 
+Or alternately, set a termination handler:
 
+```objective-c
+privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
+    NSLog(@"Terminating task: %@", [privilegedTask description]);
+};
+```
+
+###  AuthorizationExecuteWithPrivileges is deprecated
+
+[AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) is deprecated as of OS X 10.7 but remains available
+in OS X 10.11 El Capitan. Here's how you check if STPrivilegedTask works in the running
+version of OS X:
+
+```objective-c
+OSStatus err = [privilegedTask launch];
+if (err == errAuthorizationFnNoLongerExists) {
+    NSLog(@"AuthorizationExecuteWithPrivileges not available");
+}
+```
 
 # BSD License
 

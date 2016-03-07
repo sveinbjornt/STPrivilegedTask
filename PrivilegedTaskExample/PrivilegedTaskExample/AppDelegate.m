@@ -1,6 +1,6 @@
 /*
  # PrivilegedTaskExample
- # Copyright (C) 2015 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
+ # Copyright (C) 2015-2016 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
  #
  # BSD License
  # Redistribution and use in source and binary forms, with or without
@@ -29,20 +29,17 @@
 #import "AppDelegate.h"
 #import "STPrivilegedTask.h"
 
-@interface AppDelegate ()
-
-@property (weak) IBOutlet NSWindow *window;
-@end
-
 @implementation AppDelegate
 
 - (IBAction)runNSTask:(id)sender {
+    
     NSTask *task = [[NSTask alloc] init];
     
     NSMutableArray *components = [[[self.commandTextField stringValue] componentsSeparatedByString:@" "] mutableCopy];
     task.launchPath = components[0];
     [components removeObjectAtIndex:0];
     task.arguments = components;
+    task.currentDirectoryPath = [[NSBundle  mainBundle] resourcePath];
     
     NSPipe *outputPipe = [NSPipe pipe];
     [task setStandardOutput:outputPipe];
@@ -60,7 +57,6 @@
 
 - (IBAction)runSTPrivilegedTask:(id)sender {
     
-    //initalize task
     STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
     
     NSMutableArray *components = [[[self.commandTextField stringValue] componentsSeparatedByString:@" "] mutableCopy];
@@ -75,9 +71,11 @@
     OSStatus err = [privilegedTask launch];
     if (err != errAuthorizationSuccess) {
         if (err == errAuthorizationCanceled) {
+            NSLog(@"User cancelled");
             return;
         }  else {
-            NSLog(@"Something went wrong");
+            NSLog(@"Something went wrong: %d", (int)err);
+            // For error codes, see http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h
         }
     }
     
@@ -88,6 +86,5 @@
     
     [self.outputTextField setString:outputString];
 }
-
 
 @end

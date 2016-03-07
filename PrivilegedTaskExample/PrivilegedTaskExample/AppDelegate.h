@@ -1,6 +1,6 @@
 /*
  # PrivilegedTaskExample
- # Copyright (C) 2015 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
+ # Copyright (C) 2015-2016 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
  #
  # BSD License
  # Redistribution and use in source and binary forms, with or without
@@ -30,8 +30,9 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property IBOutlet id commandTextField;
-@property IBOutlet id outputTextField;
+@property (assign, nonatomic) IBOutlet NSWindow *window;
+@property (assign, nonatomic) IBOutlet NSTextField *commandTextField;
+@property (assign, nonatomic) IBOutlet NSTextView *outputTextField;
 
 - (IBAction)runNSTask:(id)sender;
 - (IBAction)runSTPrivilegedTask:(id)sender;
