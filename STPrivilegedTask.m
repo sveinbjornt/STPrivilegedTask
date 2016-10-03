@@ -252,10 +252,12 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 // check if task has terminated
 - (void)checkTaskStatus
-{    
-    int pid = waitpid(_processIdentifier, &_terminationStatus, WNOHANG);
+{
+    int status;
+    int pid = waitpid(_processIdentifier, &status, WNOHANG);
     if (pid != 0) {
         _isRunning = NO;
+        _terminationStatus = WEXITSTATUS(status);
         [checkStatusTimer invalidate];
         [[NSNotificationCenter defaultCenter] postNotificationName:STPrivilegedTaskDidTerminateNotification object:self];
         if (_terminationHandler) {

@@ -11,3 +11,5 @@ echo "Effective User ID:"
 echo ""
 echo "Current working directory:"
 echo "$PWD"
+
+exit 122
