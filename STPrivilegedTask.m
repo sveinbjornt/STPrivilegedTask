@@ -39,7 +39,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 @implementation STPrivilegedTask
 {
-    NSTimer *checkStatusTimer;
+    NSTimer *_checkStatusTimer;
 }
 
 - (instancetype)init
@@ -224,7 +224,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     _processIdentifier = fcntl(fileno(outputFile), F_GETOWN, 0);
     
     // start monitoring task
-    checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(checkTaskStatus) userInfo:nil repeats:YES];
+    _checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(checkTaskStatus) userInfo:nil repeats:YES];
         
     return err;
 }
@@ -254,7 +254,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     if (pid != 0) {
         _isRunning = NO;
         _terminationStatus = WEXITSTATUS(status);
-        [checkStatusTimer invalidate];
+        [_checkStatusTimer invalidate];
         [[NSNotificationCenter defaultCenter] postNotificationName:STPrivilegedTaskDidTerminateNotification object:self];
         if (_terminationHandler) {
             _terminationHandler(self);
