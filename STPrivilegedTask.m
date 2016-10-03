@@ -242,7 +242,19 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 // hang until task is done
 - (void)waitUntilExit
 {
-    waitpid(_processIdentifier, &_terminationStatus, 0);
+    if (!_isRunning) {
+        NSLog(@"Task %@ is not running", [super description]);
+        return;
+    }
+    
+    [_checkStatusTimer invalidate];
+    
+    int status;
+    pid_t pid = 0;
+    while ((pid = waitpid(_processIdentifier, &status, WNOHANG)) == 0) {
+        // do nothing
+    }
+    _terminationStatus = WEXITSTATUS(status);
     _isRunning = NO;
 }
 
@@ -250,7 +262,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
 - (void)checkTaskStatus
 {
     int status;
-    int pid = waitpid(_processIdentifier, &status, WNOHANG);
+    pid_t pid = waitpid(_processIdentifier, &status, WNOHANG);
     if (pid != 0) {
         _isRunning = NO;
         _terminationStatus = WEXITSTATUS(status);

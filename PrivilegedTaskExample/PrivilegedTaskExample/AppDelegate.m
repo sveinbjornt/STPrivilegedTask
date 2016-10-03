@@ -51,8 +51,10 @@
     
     NSData *outputData = [readHandle readDataToEndOfFile];
     NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
-    
     [self.outputTextField setString:outputString];
+    
+    NSString *exitStr = [NSString stringWithFormat:@"Exit status: %d", task.terminationStatus];
+    [self.exitStatusTextField setStringValue:exitStr];
 }
 
 - (IBAction)runSTPrivilegedTask:(id)sender {
@@ -79,12 +81,16 @@
         }
     }
     
+    [privilegedTask waitUntilExit];
+    
     // Success!  Now, start monitoring output file handle for data
     NSFileHandle *readHandle = [privilegedTask outputFileHandle];
     NSData *outputData = [readHandle readDataToEndOfFile];
     NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
-    
     [self.outputTextField setString:outputString];
+    
+    NSString *exitStr = [NSString stringWithFormat:@"Exit status: %d", privilegedTask.terminationStatus];
+    [self.exitStatusTextField setStringValue:exitStr];
 }
 
 @end

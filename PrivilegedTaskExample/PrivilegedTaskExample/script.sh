@@ -12,4 +12,4 @@ echo ""
 echo "Current working directory:"
 echo "$PWD"
 
-exit 122
+exit 5
