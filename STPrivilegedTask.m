@@ -120,20 +120,16 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     return task;
 }
 
-#pragma mark -
-
-- (void)dealloc
-{
-#if !__has_feature(objc_arc)
-    
-#endif
-}
-
 # pragma mark -
 
 // return 0 for success
 - (OSStatus)launch
 {
+    if (_isRunning) {
+        NSLog(@"Task already running: %@", [self description]);
+        return 0;
+    }
+    
     OSStatus err = noErr;
     const char *toolPath = [self.launchPath fileSystemRepresentation];
     
