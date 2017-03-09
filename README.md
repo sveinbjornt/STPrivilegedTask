@@ -98,7 +98,7 @@ privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
 ###  AuthorizationExecuteWithPrivileges is deprecated
 
 [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) is deprecated as of OS X 10.7 but remains available
-in OS X 10.11 El Capitan. Here's how you check if STPrivilegedTask works in the running
+in OS X 10.12 Sierra. Here's how you check if STPrivilegedTask works in the running
 version of OS X:
 
 ```objective-c
