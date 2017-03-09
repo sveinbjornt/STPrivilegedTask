@@ -2,7 +2,7 @@
 
 An NSTask-like wrapper around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) in the Security API to run shell commands with root privileges in Mac OS X.
 
-Created a long time ago. It has now been updated to support ARC and is available via <a href="https://cocoapods.org">CocoaPods</a>.
+STPrivilegedTask was created a long time ago. It has now been updated to support ARC and is available via <a href="https://cocoapods.org">CocoaPods</a>.
 
 ## Examples
 
@@ -107,6 +107,33 @@ if (err == errAuthorizationFnNoLongerExists) {
     NSLog(@"AuthorizationExecuteWithPrivileges not available");
 }
 ```
+
+## Example Screenshot
+
+A sample app which makes use of STPrivilegedTask is included in the project. This app runs the following script:
+
+```
+#!/bin/sh
+
+echo "/usr/bin/whoami:"
+whoami
+echo ""
+echo "Real User ID:"
+echo $UID \($USER\)
+echo ""
+echo "Effective User ID:"
+/usr/bin/id -u
+echo ""
+echo "Current working directory:"
+echo "$PWD"
+
+exit 5
+```
+
+It then presents the output of the script in a window, along with the exit code.
+
+<img src="screenshot.png">
+
 
 # BSD License
 
