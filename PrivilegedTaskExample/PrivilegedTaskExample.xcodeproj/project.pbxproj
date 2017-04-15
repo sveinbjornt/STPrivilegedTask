@@ -102,6 +102,7 @@
 				F4F103531B5155A200BCAD40 /* Sources */,
 				F4F103541B5155A200BCAD40 /* Frameworks */,
 				F4F103551B5155A200BCAD40 /* Resources */,
+				F451B52C1EA295B300DE50FD /* Set CFBundleVersion */,
 			);
 			buildRules = (
 			);
@@ -156,6 +157,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F451B52C1EA295B300DE50FD /* Set CFBundleVersion */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set CFBundleVersion";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nBUILD_NUMBER=`git rev-list HEAD | wc -l`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nif [ \"$?\" -ne 0 ] ; then\necho \"warning:Error incrementing CFBundleVersion\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F4F103531B5155A200BCAD40 /* Sources */ = {
