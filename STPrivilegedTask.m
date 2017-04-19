@@ -148,11 +148,13 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     char *args[numberOfArguments + 1];
     FILE *outputFile;
 
-    // Create fn pointer to AuthorizationExecuteWithPrivileges in case it doesn't exist
-    // in this version of MacOS
+    // Create fn pointer to AuthorizationExecuteWithPrivileges in
+    // case it doesn't exist in this version of the OS
     static OSStatus (*_AuthExecuteWithPrivsFn)(
         AuthorizationRef authorization, const char *pathToTool, AuthorizationFlags options,
         char * const *arguments, FILE **communicationsPipe) = NULL;
+    
+#pragma GCC diagnostic ignored "-Wpedantic" // stop the pedantry!
     _AuthExecuteWithPrivsFn = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
     
     // Use Apple's Authentication Manager APIs to get an Authorization Reference
@@ -283,6 +285,7 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
         // sort of exception, this won't fail gracefully, but that's a risk
         // we'll have to take for now.
         // Pattern by Andy Kim from Potion Factory LLC
+#pragma GCC diagnostic ignored "-Wpedantic" // stop the pedantry!
         _AuthExecuteWithPrivsFn = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
         if (!_AuthExecuteWithPrivsFn) {
             // This version of OS X has finally removed this function. Return with an error.
