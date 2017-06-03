@@ -33,6 +33,16 @@ if (err != errAuthorizationSuccess) {
 ```
 See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h) for a list of possible error codes.
 
+### Launch task one-liner
+
+```objective-c
+OSStatus err = [STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh" 
+                                                            arguments:@[@"/path/to/script.sh"]];
+
+
+```
+
+
 ### Getting task output
 
 ```objective-c
