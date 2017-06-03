@@ -66,7 +66,9 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
     //make sure there's actual data
     if ([data length]) {
         // do something with the data
-        
+        NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(outputString);
+
         // go read more data in the background
         [[aNotification object] readInBackgroundAndNotify];
     } else {
