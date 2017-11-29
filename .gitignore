@@ -13,7 +13,7 @@ BuildData
 *.mode2v3
 *.xcodeproj/xcuserdata/*.xcuserdatad
 *.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad
-xcuserdata/
+xcuserdata
 platypus.man.html
 *UserInterfaceState.xcuserstate
 .DS_Store
