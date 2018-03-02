@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -349,12 +349,15 @@
                 <rect key="frame" x="0.0" y="0.0" width="518" height="309"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" id="mzG-KW-No6">
-                        <rect key="frame" x="312" y="13" width="192" height="32"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="mzG-KW-No6">
+                        <rect key="frame" x="302" y="13" width="202" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <buttonCell key="cell" type="push" title="Run as STPrivilegedTask" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dLs-UA-vac">
+                        <buttonCell key="cell" type="push" title="Run as STPrivilegedTask" bezelStyle="rounded" image="unlocked" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dLs-UA-vac">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                         </buttonCell>
                         <connections>
                             <action selector="runSTPrivilegedTask:" target="Voe-Tx-rLC" id="Dbb-2Q-bcA"/>
@@ -414,8 +417,8 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" id="sed-BX-uuW">
-                        <rect key="frame" x="179" y="13" width="133" height="32"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="sed-BX-uuW">
+                        <rect key="frame" x="169" y="13" width="133" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Run as NSTask" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zls-Mo-0Lc">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -430,4 +433,7 @@
             <point key="canvasLocation" x="479" y="504.5"/>
         </window>
     </objects>
+    <resources>
+        <image name="unlocked" width="32" height="32"/>
+    </resources>
 </document>

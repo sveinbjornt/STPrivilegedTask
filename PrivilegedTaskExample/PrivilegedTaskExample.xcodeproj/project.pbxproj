@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F42EA3F120499D760047D070 /* unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = F42EA3F020499D760047D070 /* unlocked.png */; };
 		F47D65BE1EC3535D0000ABAE /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = F47D65BD1EC3535D0000ABAE /* script.pl */; };
 		F4C19A711BD1963900F411BD /* script.sh in Resources */ = {isa = PBXBuildFile; fileRef = F4C19A701BD1963900F411BD /* script.sh */; };
 		F4F1035E1B5155A200BCAD40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F1035D1B5155A200BCAD40 /* AppDelegate.m */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F42EA3F020499D760047D070 /* unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlocked.png; sourceTree = "<group>"; };
 		F47D65BD1EC3535D0000ABAE /* script.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = script.pl; sourceTree = "<group>"; };
 		F4C19A701BD1963900F411BD /* script.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = script.sh; sourceTree = "<group>"; };
 		F4E5E4001EE2953E0072EACE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 				F47D65BD1EC3535D0000ABAE /* script.pl */,
 				F4C19A701BD1963900F411BD /* script.sh */,
 				F4F103631B5155A200BCAD40 /* MainMenu.xib */,
+				F42EA3F020499D760047D070 /* unlocked.png */,
 				F4F1037F1B5166CF00BCAD40 /* lock-icon.icns */,
 				F4F1035B1B5155A200BCAD40 /* Info.plist */,
 			);
@@ -122,7 +125,7 @@
 		F4F1034F1B5155A200BCAD40 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Sveinbjorn Thordarson";
 				TargetAttributes = {
 					F4F103561B5155A200BCAD40 = {
@@ -154,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F47D65BE1EC3535D0000ABAE /* script.pl in Resources */,
+				F42EA3F120499D760047D070 /* unlocked.png in Resources */,
 				F4F103801B5166CF00BCAD40 /* lock-icon.icns in Resources */,
 				F4C19A711BD1963900F411BD /* script.sh in Resources */,
 				F4F103651B5155A200BCAD40 /* MainMenu.xib in Resources */,
