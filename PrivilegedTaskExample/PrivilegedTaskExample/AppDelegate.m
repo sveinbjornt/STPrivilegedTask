@@ -1,6 +1,6 @@
 /*
  # PrivilegedTaskExample
- # Copyright (C) 2009 Sveinbjorn Thordarson <sveinbjornt@gmail.com>
+ # Copyright (C) 2009 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
  #
  # BSD License
  # Redistribution and use in source and binary forms, with or without
