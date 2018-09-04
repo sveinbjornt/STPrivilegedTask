@@ -105,6 +105,17 @@ privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
 };
 ```
 
+### Launch using external AuthorizationRef
+
+```objective-c
+// ... Create your own AuthorizationRef
+
+[STPriviledTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh"  
+                                           arguments:@"/path/to/script" 
+                                    currentDirectory:@"/"
+                                       authorization:authRef]
+```
+
 ###  AuthorizationExecuteWithPrivileges() is deprecated
 
 [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) is deprecated as of macOS 10.7 but remains available
