@@ -37,9 +37,31 @@
 // New error code denoting that AuthorizationExecuteWithPrivileges no longer exists
 OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
+// Create fn pointer to AuthorizationExecuteWithPrivileges in case
+// it doesn't exist in this version of MacOS
+static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const char *pathToTool, AuthorizationFlags options,
+                                           char * const *arguments, FILE **communicationsPipe) = NULL;
+
+
 @implementation STPrivilegedTask
 {
     NSTimer *_checkStatusTimer;
+}
+
++ (void)initialize;
+{
+    // On 10.7, AuthorizationExecuteWithPrivileges is deprecated. We want
+    // to still use it since there's no good alternative (without requiring
+    // code signing). We'll look up the function through dyld and fail if
+    // it is no longer accessible. If Apple removes the function entirely
+    // this will fail gracefully. If they keep the function and throw some
+    // sort of exception, this won't fail gracefully, but that's a risk
+    // we'll have to take for now.
+    // Pattern by Andy Kim from Potion Factory LLC
+#pragma GCC diagnostic ignored "-Wpedantic" // stop the pedantry!
+#pragma clang diagnostic push
+    _AuthExecuteWithPrivsFn = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
+#pragma clang diagnostic pop
 }
 
 - (instancetype)init
@@ -147,17 +169,6 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     NSUInteger numberOfArguments = [arguments count];
     char *args[numberOfArguments + 1];
     FILE *outputFile;
-
-    // Create fn pointer to AuthorizationExecuteWithPrivileges in
-    // case it doesn't exist in this version of the OS
-    static OSStatus (*_AuthExecuteWithPrivsFn)(
-        AuthorizationRef authorization, const char *pathToTool, AuthorizationFlags options,
-        char * const *arguments, FILE **communicationsPipe) = NULL;
-
-#pragma clang diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic" // stop the pedantry!
-    _AuthExecuteWithPrivsFn = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
-#pragma clang diagnostic pop
 
     // Use Apple's Authentication Manager APIs to get an Authorization Reference
     // These Apple APIs are quite possibly the most horrible of the Mac OS X APIs
@@ -272,32 +283,10 @@ OSStatus const errAuthorizationFnNoLongerExists = -70001;
     
 + (BOOL)authorizationFunctionAvailable
 {
-    // Create fn pointer to AuthorizationExecuteWithPrivileges in case
-    // it doesn't exist in this version of MacOS
-    static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const char *pathToTool, AuthorizationFlags options,
-                                               char * const *arguments, FILE **communicationsPipe) = NULL;
-    
-    // Check to see if we have the correct function in our loaded libraries
     if (!_AuthExecuteWithPrivsFn) {
-        // On 10.7, AuthorizationExecuteWithPrivileges is deprecated. We want
-        // to still use it since there's no good alternative (without requiring
-        // code signing). We'll look up the function through dyld and fail if
-        // it is no longer accessible. If Apple removes the function entirely
-        // this will fail gracefully. If they keep the function and throw some
-        // sort of exception, this won't fail gracefully, but that's a risk
-        // we'll have to take for now.
-        // Pattern by Andy Kim from Potion Factory LLC
-#pragma GCC diagnostic ignored "-Wpedantic" // stop the pedantry!
-#pragma clang diagnostic push
-        _AuthExecuteWithPrivsFn = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
-#pragma clang diagnostic pop
-
-        if (!_AuthExecuteWithPrivsFn) {
-            // This version of OS X has finally removed this function. Return with an error.
-            return NO;
-        }
+        // This version of OS X has finally removed this function. Return with an error.
+        return NO;
     }
-    
     return YES;
 }
 
