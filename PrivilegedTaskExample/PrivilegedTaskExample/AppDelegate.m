@@ -31,11 +31,34 @@
 
 @implementation AppDelegate
 
+- (BOOL)isValidShellCommand:(NSString *)cmd {
+    NSArray *cmp = [cmd componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+    if ([[NSFileManager defaultManager] isExecutableFileAtPath:cmp[0]] ) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (IBAction)runNSTask:(id)sender {
+    
+    NSString *cmd = [self.commandTextField stringValue];
+    if ([self isValidShellCommand:cmd] == NO) {
+        NSBeep();
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Invalid shell command"];
+        [alert setInformativeText:@"Command must start with path to executable file"];
+        [alert runModal];
+        return;
+    }
     
     NSTask *task = [[NSTask alloc] init];
     
-    NSMutableArray *components = [[[self.commandTextField stringValue] componentsSeparatedByString:@" "] mutableCopy];
+    NSMutableArray *components = [[cmd componentsSeparatedByCharactersInSet:
+                       [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+    
     task.launchPath = components[0];
     [components removeObjectAtIndex:0];
     task.arguments = components;
@@ -58,6 +81,17 @@
 }
 
 - (IBAction)runSTPrivilegedTask:(id)sender {
+    
+    NSString *cmd = [self.commandTextField stringValue];
+    if ([self isValidShellCommand:cmd] == NO) {
+        NSBeep();
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Invalid shell command"];
+        [alert setInformativeText:@"Command must start with path to executable file"];
+        [alert runModal];
+        return;
+    }
     
     STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
     
