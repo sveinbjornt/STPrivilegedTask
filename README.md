@@ -132,7 +132,7 @@ if (err == errAuthorizationFnNoLongerExists) {
 If you need to check whether STPrivilegedTask works before you launch the task:
 
 ```objective-c
-BOOL works = [STPrivilegedTask authorizationFunctionAvailable]
+BOOL works = [STPrivilegedTask authorizationFunctionAvailable];
 ```
 
 ## Sample app
