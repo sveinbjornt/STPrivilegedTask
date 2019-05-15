@@ -20,14 +20,14 @@ STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
 
 // Launch it, user is prompted for password
 OSStatus err = [privilegedTask launch];
-if (err != errAuthorizationSuccess) {
-	if (err == errAuthorizationCanceled) {
-	    NSLog(@"User cancelled");
-	} else {
-	    NSLog(@"Something went wrong");
-	}
-} else {
-	NSLog(@"Task successfully launched");
+if (err == errAuthorizationSuccess) {
+    NSLog(@"Task successfully launched");
+}
+else if (err == errAuthorizationCanceled) {
+    NSLog(@"User cancelled");
+} 
+else {
+    NSLog(@"Something went wrong");
 }
 ```
 See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h) for a list of possible error codes.
@@ -93,7 +93,7 @@ You can observe STPrivilegedTaskDidTerminateNotification:
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
 
 - (void)privilegedTaskFinished:(NSNotification *)aNotification {
-	// do something
+    // do something
 }
 ```
 
