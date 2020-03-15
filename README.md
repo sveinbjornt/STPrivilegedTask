@@ -1,8 +1,8 @@
-# STPrivilegedTask - Objective C class
+# STPrivilegedTask - Objective-C class
 
-An NSTask-like wrapper around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) in the Security API to run shell commands with root privileges in Mac OS X.
+An NSTask-like wrapper class around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) in the macOS Security API to run shell commands with root privileges.
 
-STPrivilegedTask was created a long time ago. It has now been updated to support ARC and is available via <a href="https://cocoapods.org">CocoaPods</a>.
+STPrivilegedTask was created a long time ago. It has now been updated over the years to work with the latest versions of macOS and is available via <a href="https://cocoapods.org">CocoaPods</a>.
 
 ## Examples
 
@@ -45,7 +45,7 @@ OSStatus err = [STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh"
 ### Getting task output
 
 ```objective-c
-// ... launch task
+// ... Launch task
 
 [privilegedTask waitUntilExit];
 
@@ -59,7 +59,7 @@ NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUT
 
 ```objective-c
 
-// ... launch task
+// ... Launch task
 
 NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOutputData:) name:NSFileHandleReadCompletionNotification object:readHandle];
@@ -68,19 +68,19 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 // ...
 
 - (void)getOutputData:(NSNotification *)aNotification {
-    //get data from notification
+    // Get data from notification
     NSData *data = [[aNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
     
-    //make sure there's actual data
+    // Make sure there's actual data
     if ([data length]) {
-        // do something with the data
+        // Do something with the data
         NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(outputString);
 
-        // go read more data in the background
+        // Go read more data in the background
         [[aNotification object] readInBackgroundAndNotify];
     } else {
-        // do something else
+        // Do something else
     }
 }
 ```
@@ -93,11 +93,11 @@ You can observe STPrivilegedTaskDidTerminateNotification:
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
 
 - (void)privilegedTaskFinished:(NSNotification *)aNotification {
-    // do something
+    // Do something
 }
 ```
 
-Or alternately, set a termination handler:
+Or alternatively, set a termination handler:
 
 ```objective-c
 privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
@@ -164,7 +164,7 @@ It then presents the output of the script in a window, along with the exit code.
 
 ## BSD License 
 
-Copyright (c) Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
+Copyright (c) 2008-2020 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
