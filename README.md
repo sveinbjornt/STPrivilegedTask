@@ -1,8 +1,10 @@
 # STPrivilegedTask - Objective-C class
 
-An NSTask-like wrapper class around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) in the macOS Security API to run shell commands with root privileges.
+An NSTask-like wrapper class around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
+in the macOS Security API to run shell commands with root privileges.
 
-STPrivilegedTask was created a long time ago. It has been updated over the years to work with the latest versions of macOS and is available via <a href="https://cocoapods.org">CocoaPods</a>.
+STPrivilegedTask was created a long time ago. It has been updated over the years to work with the latest
+versions of macOS and is available via [CocoaPods](https://cocoapods.org).
 
 ## Examples
 
@@ -10,7 +12,7 @@ STPrivilegedTask was created a long time ago. It has been updated over the years
 
 ```objective-c
 // Create task
-STPrivilegedTask *privilegedTask = [[STPrivilegedTask alloc] init];
+STPrivilegedTask *privilegedTask = [STPrivilegedTask new];
 [privilegedTask setLaunchPath:@"/usr/bin/touch"];
 [privilegedTask setArguments:@[@"/etc/my_test_file"]];
 
@@ -30,7 +32,8 @@ else {
     NSLog(@"Something went wrong");
 }
 ```
-See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h) for a list of possible error codes.
+See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h)
+for a list of possible error codes.
 
 ### Launch task one-liner
 
@@ -47,7 +50,7 @@ OSStatus err = [STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh"
 ```objective-c
 // ... Launch task
 
-[privilegedTask waitUntilExit];
+[privilegedTask waitUntilExit]; // This is blocking
 
 // Read output file handle for data
 NSData *outputData = [[privilegedTask outputFileHandle] readDataToEndOfFile];
@@ -62,7 +65,10 @@ NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUT
 // ... Launch task
 
 NSFileHandle *readHandle = [privilegedTask outputFileHandle];
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOutputData:) name:NSFileHandleReadCompletionNotification object:readHandle];
+[[NSNotificationCenter defaultCenter] addObserver:self
+                                         selector:@selector(getOutputData:)
+                                             name:NSFileHandleReadCompletionNotification
+                                           object:readHandle];
 [readHandle readInBackgroundAndNotify];
 
 // ...
@@ -75,7 +81,7 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
     if ([data length]) {
         // Do something with the data
         NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(outputString);
+        NSLog(@"%@", outputString);
 
         // Go read more data in the background
         [[aNotification object] readInBackgroundAndNotify];
@@ -90,7 +96,10 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 You can observe STPrivilegedTaskDidTerminateNotification:
 
 ```objective-c
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(privilegedTaskFinished:) name:STPrivilegedTaskDidTerminateNotification object:nil];
+[[NSNotificationCenter defaultCenter] addObserver:self
+                                         selector:@selector(privilegedTaskFinished:)
+                                             name:STPrivilegedTaskDidTerminateNotification
+                                           object:nil];
 
 - (void)privilegedTaskFinished:(NSNotification *)aNotification {
     // Do something
@@ -110,17 +119,17 @@ privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
 ```objective-c
 // ... Create your own AuthorizationRef
 
-[STPriviledTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh"  
-                                           arguments:@"/path/to/script" 
-                                    currentDirectory:@"/"
-                                       authorization:authRef]
+[STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh"
+                                             arguments:@"/path/to/script"
+                                      currentDirectory:@"/"
+                                         authorization:authRef]
 ```
 
 ###  AuthorizationExecuteWithPrivileges() is deprecated
 
-[AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges) is deprecated as of macOS 10.7 but remains available
-in 10.14 Mojave. If you want to be future-proof, here's how you check if STPrivilegedTask 
-works in the running version of macOS:
+[AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
+is deprecated as of macOS 10.7 but remains available in 10.15 Catalina. If you want to be future-proof,
+here's how you check if STPrivilegedTask works in the running version of macOS:
 
 ```objective-c
 OSStatus err = [privilegedTask launch];
