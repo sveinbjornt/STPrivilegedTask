@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2008-2020 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+   Copyright (C) 2008-2021 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
    
    BSD License
    Redistribution and use in source and binary forms, with or without

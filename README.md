@@ -20,7 +20,7 @@ STPrivilegedTask *privilegedTask = [STPrivilegedTask new];
 // NSString *path = [[NSBundle mainBundle] resourcePath];
 // [privilegedTask setCurrentDirectoryPath:path];
 
-// Launch it, user is prompted for password
+// Launch it, user is prompted for password (blocking)
 OSStatus err = [privilegedTask launch];
 if (err == errAuthorizationSuccess) {
     NSLog(@"Task successfully launched");
@@ -173,7 +173,7 @@ It then presents the output of the script in a window, along with the exit code.
 
 ## BSD License 
 
-Copyright (c) 2008-2020 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
+Copyright (c) 2008-2021 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
