@@ -1,10 +1,27 @@
-# STPrivilegedTask - Objective-C class
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Language](https://img.shields.io/badge/language-objective--c-lightgrey)]()
+[![Release](https://shields.io/github/v/release/sveinbjornt/STPrivilegedTask?display_name=tag)]()
 
-An NSTask-like wrapper class around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
-in the macOS Security API to run shell commands with root privileges.
+# STPrivilegedTask
 
-STPrivilegedTask was created a long time ago. It has been updated over the years to work with the latest
-versions of macOS and is available via [CocoaPods](https://cocoapods.org).
+A Cocoa NSTask-like wrapper class around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
+in the macOS Security API to run shell commands with root privileges. Implemented in Objective-C.
+
+STPrivilegedTask was created a *very long time ago* (~2005). It has been updated over the years
+to work with the latest versions of macOS (macOS 13 as of writing) and is available via
+[CocoaPods](https://cocoapods.org). It relies on a system function that has been deprecated since 
+Mac OS X 10.7 "Lion" and will fail gracefully if the function is not available in a future version
+of macOS. That being said, *caveat emptor*.
+
+## Install
+
+Add the following to your `Podfile` target dependencies:
+
+```ruby
+    pod 'STPrivilegedTask', '~> 1.0.8'
+```
+
+...or just download and include the files directly in your project.
 
 ## Examples
 
@@ -173,7 +190,7 @@ It then presents the output of the script in a window, along with the exit code.
 
 ## BSD License 
 
-Copyright (c) 2008-2021 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
+Copyright (c) 2008-2023 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
