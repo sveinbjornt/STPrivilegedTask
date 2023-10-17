@@ -1,6 +1,8 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Language](https://img.shields.io/badge/language-objective--c-lightgrey)]()
 [![Release](https://shields.io/github/v/release/sveinbjornt/STPrivilegedTask?display_name=tag)]()
+[![CocoaPods](https://img.shields.io/cocoapods/v/STPrivilegedTask.svg)](https://img.shields.io/cocoapods/v/STPrivilegedTask.svg)
+
 
 # STPrivilegedTask
 

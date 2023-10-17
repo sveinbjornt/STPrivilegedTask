@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F42EA3F120499D760047D070 /* unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = F42EA3F020499D760047D070 /* unlocked.png */; };
-		F47D65BE1EC3535D0000ABAE /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = F47D65BD1EC3535D0000ABAE /* script.pl */; };
 		F4C19A711BD1963900F411BD /* script.sh in Resources */ = {isa = PBXBuildFile; fileRef = F4C19A701BD1963900F411BD /* script.sh */; };
 		F4F1035E1B5155A200BCAD40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F1035D1B5155A200BCAD40 /* AppDelegate.m */; };
 		F4F103601B5155A200BCAD40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F1035F1B5155A200BCAD40 /* main.m */; };
@@ -19,8 +18,6 @@
 
 /* Begin PBXFileReference section */
 		F42EA3F020499D760047D070 /* unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlocked.png; sourceTree = "<group>"; };
-		F46F13B12ADE182B004B2398 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = TODO.md; path = ../TODO.md; sourceTree = "<group>"; };
-		F47D65BD1EC3535D0000ABAE /* script.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = script.pl; sourceTree = "<group>"; };
 		F4C19A701BD1963900F411BD /* script.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = script.sh; sourceTree = "<group>"; };
 		F4E5E4001EE2953E0072EACE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		F4F103571B5155A200BCAD40 /* PrivilegedTaskExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrivilegedTaskExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,7 +46,6 @@
 		F47C14F61C8CB70C005BC692 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F47D65BD1EC3535D0000ABAE /* script.pl */,
 				F4C19A701BD1963900F411BD /* script.sh */,
 				F4F103631B5155A200BCAD40 /* MainMenu.xib */,
 				F42EA3F020499D760047D070 /* unlocked.png */,
@@ -63,7 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				F4F1037E1B51664C00BCAD40 /* README.md */,
-				F46F13B12ADE182B004B2398 /* TODO.md */,
 				F4F103811B516A3500BCAD40 /* STPrivilegedTask.podspec */,
 				F4F1037D1B51663800BCAD40 /* STPrivilegedTask */,
 				F4F103591B5155A200BCAD40 /* PrivilegedTaskExample */,
@@ -159,7 +154,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F47D65BE1EC3535D0000ABAE /* script.pl in Resources */,
 				F42EA3F120499D760047D070 /* unlocked.png in Resources */,
 				F4F103801B5166CF00BCAD40 /* lock-icon.icns in Resources */,
 				F4C19A711BD1963900F411BD /* script.sh in Resources */,

@@ -33,6 +33,19 @@
 #import "AppDelegate.h"
 #import "STPrivilegedTask.h"
 
+@interface AppDelegate()
+
+@property (assign, nonatomic) IBOutlet NSWindow *window;
+@property (assign, nonatomic) IBOutlet NSTextField *commandTextField;
+@property (assign, nonatomic) IBOutlet NSTextView *outputTextField;
+@property (assign, nonatomic) IBOutlet NSTextField *exitStatusTextField;
+
+- (IBAction)runNSTask:(id)sender;
+- (IBAction)runSTPrivilegedTask:(id)sender;
+- (BOOL)isValidShellCommand:(NSString *)cmd;
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)isValidShellCommand:(NSString *)cmd {
@@ -77,7 +90,8 @@
     [task waitUntilExit];
     
     NSData *outputData = [readHandle readDataToEndOfFile];
-    NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+    NSString *outputString = [[NSString alloc] initWithData:outputData
+                                                   encoding:NSUTF8StringEncoding];
     [self.outputTextField setString:outputString];
     
     NSString *exitStr = [NSString stringWithFormat:@"Exit status: %d", task.terminationStatus];

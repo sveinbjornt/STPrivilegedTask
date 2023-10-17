@@ -34,13 +34,5 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (assign, nonatomic) IBOutlet NSWindow *window;
-@property (assign, nonatomic) IBOutlet NSTextField *commandTextField;
-@property (assign, nonatomic) IBOutlet NSTextView *outputTextField;
-@property (assign, nonatomic) IBOutlet NSTextField *exitStatusTextField;
-
-- (IBAction)runNSTask:(id)sender;
-- (IBAction)runSTPrivilegedTask:(id)sender;
-
 @end
 
