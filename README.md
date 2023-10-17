@@ -4,24 +4,25 @@
 
 # STPrivilegedTask
 
-A Cocoa NSTask-like wrapper class around [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
+A Cocoa NSTask-like wrapper class around
+[AuthorizationExecuteWithPrivileges()](https://developer.apple.com/documentation/security/1540038-authorizationexecutewithprivileg)
 in the macOS Security API to run shell commands with root privileges. Implemented in Objective-C.
 
-STPrivilegedTask was created a *very long time ago* (~2005). It has been updated over the years
-to work with the latest versions of macOS (macOS 13 as of writing) and is available via
-[CocoaPods](https://cocoapods.org). It relies on a system function that has been deprecated since 
-Mac OS X 10.7 "Lion" and will fail gracefully if the function is not available in a future version
-of macOS. That being said, *caveat emptor*.
+STPrivilegedTask was created a *very long time ago* (~2005) and has a long history. It has been
+updated over the years to work with the latest versions of macOS (macOS 13 "Ventura" as of writing)
+and is available via [CocoaPods](https://cocoapods.org). It relies on a system function that has
+been deprecated since Mac OS X 10.7 "Lion" (2011) and will fail gracefully if the function is
+not available in a future version of the operating system. That being said, *caveat emptor!*
 
-## Install
+## Usage
 
-Add the following to your `Podfile` target dependencies:
+Add the following to your `Podfile` target's dependencies:
 
 ```ruby
     pod 'STPrivilegedTask', '~> 1.0.8'
 ```
 
-...or just download and include the files directly in your project.
+...or just download the two `STPrivileged.*` source files and include them directly in your project.
 
 ## Examples
 
@@ -46,7 +47,7 @@ else if (err == errAuthorizationCanceled) {
     NSLog(@"User cancelled");
 } 
 else {
-    NSLog(@"Something went wrong");
+    NSLog(@"Something went wrong, error %d", err);
 }
 ```
 See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h)
@@ -57,8 +58,6 @@ for a list of possible error codes.
 ```objective-c
 OSStatus err = [STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh" 
                                                             arguments:@[@"/path/to/script.sh"]];
-
-
 ```
 
 
@@ -71,7 +70,8 @@ OSStatus err = [STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh"
 
 // Read output file handle for data
 NSData *outputData = [[privilegedTask outputFileHandle] readDataToEndOfFile];
-NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+NSString *outputString = [[NSString alloc] initWithData:outputData 
+                                               encoding:NSUTF8StringEncoding];
 
 ```
 
@@ -79,7 +79,7 @@ NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUT
 
 ```objective-c
 
-// ... Launch task
+// ... Launch privilegedTtask
 
 NSFileHandle *readHandle = [privilegedTask outputFileHandle];
 [[NSNotificationCenter defaultCenter] addObserver:self
@@ -97,7 +97,8 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
     // Make sure there's actual data
     if ([data length]) {
         // Do something with the data
-        NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSString *outputString = [[NSString alloc] initWithData:data 
+        										        encoding:NSUTF8StringEncoding];
         NSLog(@"%@", outputString);
 
         // Go read more data in the background
@@ -123,7 +124,7 @@ You can observe STPrivilegedTaskDidTerminateNotification:
 }
 ```
 
-Or alternatively, set a termination handler:
+Or alternatively set a termination handler block:
 
 ```objective-c
 privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
@@ -145,13 +146,16 @@ privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
 ###  AuthorizationExecuteWithPrivileges() is deprecated
 
 [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
-is deprecated as of macOS 10.7 but still remains available in macOS 12 "Monterey". If you want to be future-proof,
-here's how you check if STPrivilegedTask works in the running version of macOS:
+is deprecated as of macOS 10.7 but still remains available in macOS 13 "Ventura". If you want to be 
+future-proof, here's how you check if STPrivilegedTask works in the running version of macOS:
 
 ```objective-c
+// ...create privilegedTask object
+
 OSStatus err = [privilegedTask launch];
 if (err == errAuthorizationFnNoLongerExists) {
     NSLog(@"AuthorizationExecuteWithPrivileges not available");
+    // Do something to handle the situation
 }
 ```
 
@@ -183,10 +187,9 @@ echo "$PWD"
 exit 5
 ```
 
-It then presents the output of the script in a window, along with the exit code.
+It waits for the script to finish and then shows the output in a window, along with the exit code.
 
 <img src="screenshot.png">
-
 
 ## BSD License 
 
