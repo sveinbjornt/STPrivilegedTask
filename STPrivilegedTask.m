@@ -1,30 +1,34 @@
 /*
-   STPrivilegedTask - NSTask-like wrapper around AuthorizationExecuteWithPrivileges
-   Copyright (C) 2008-2021 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
-   
-   BSD License
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-       * Redistributions of source code must retain the above copyright
-       notice, this list of conditions and the following disclaimer.
-       * Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-       * Neither the name of the copyright holder nor that of any other
-       contributors may be used to endorse or promote products
-       derived from this software without specific prior written permission.
-   
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-   DISCLAIMED. IN NO EVENT SHALL  BE LIABLE FOR ANY
-   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+    STPrivilegedTask - NSTask-like wrapper around AuthorizationExecuteWithPrivileges
+    Copyright (C) 2008-2023 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    
+    BSD License
+    
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+        
+        * Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+        
+        * Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+        
+        * Neither the name of the copyright holder nor that of any other
+        contributors may be used to endorse or promote products
+        derived from this software without specific prior written permission.
+    
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL  BE LIABLE FOR ANY
+    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import "STPrivilegedTask.h"
 
@@ -34,14 +38,18 @@
 #import <unistd.h>
 #import <dlfcn.h>
 
+NSString * const STPrivilegedTaskDidTerminateNotification = @"STPrivilegedTaskDidTerminateNotification";
+
 // New error code denoting that AuthorizationExecuteWithPrivileges no longer exists
 OSStatus const errAuthorizationFnNoLongerExists = -70001;
 
 // Create fn pointer to AuthorizationExecuteWithPrivileges
 // in case it doesn't exist in this version of macOS
-static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const char *pathToTool, AuthorizationFlags options,
-                                           char * const *arguments, FILE **communicationsPipe) = NULL;
-
+static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, 
+                                           const char *pathToTool,
+                                           AuthorizationFlags options,
+                                           char * const *arguments, 
+                                           FILE **communicationsPipe) = NULL;
 
 @implementation STPrivilegedTask
 {
@@ -66,11 +74,6 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _launchPath = nil;
-        _arguments = nil;
-        _isRunning = NO;
-        _outputFileHandle = nil;
-        _terminationHandler = nil;
         _currentDirectoryPath = [[NSFileManager defaultManager] currentDirectoryPath];
     }
     return self;
@@ -79,7 +82,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
 - (instancetype)initWithLaunchPath:(NSString *)path {
     self = [self init];
     if (self) {
-        self.launchPath = path;
+        _launchPath = path;
     }
     return self;
 }
@@ -88,7 +91,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
                          arguments:(NSArray *)args {
     self = [self initWithLaunchPath:path];
     if (self)  {
-        self.arguments = args;
+        _arguments = args;
     }
     return self;
 }
@@ -98,7 +101,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
                   currentDirectory:(NSString *)cwd {
     self = [self initWithLaunchPath:path arguments:args];
     if (self) {
-        self.currentDirectoryPath = cwd;
+        _currentDirectoryPath = cwd;
     }
     return self;
 }
@@ -291,11 +294,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
 #pragma mark -
 
 + (BOOL)authorizationFunctionAvailable {
-    if (!_AuthExecuteWithPrivsFn) {
-        // This version of macOS has finally removed this function.
-        return NO;
-    }
-    return YES;
+    return _AuthExecuteWithPrivsFn ? YES : NO;
 }
 
 #pragma mark -
