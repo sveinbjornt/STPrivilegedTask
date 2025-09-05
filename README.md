@@ -58,6 +58,11 @@ else if (err == errAuthorizationCanceled) {
 else {
     NSLog(@"Something went wrong, error %d", err);
 }
+
+// NB: STPrivilegedTask changes the current working directory of the entire process
+// using chdir(). This is not thread-safe and can lead to unexpected behavior
+// if your program does other things while the task is running.
+
 ```
 See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h)
 for a list of possible error codes.

@@ -32,6 +32,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const STPrivilegedTaskDidTerminateNotification;
 
 // Defines error value for when AuthorizationExecuteWithPrivileges no longer exists
@@ -40,32 +42,145 @@ extern const OSStatus errAuthorizationFnNoLongerExists;
 
 @interface STPrivilegedTask : NSObject
 
-@property (copy) NSArray *arguments;
-@property (copy) NSString *currentDirectoryPath;
-@property (copy) NSString *launchPath;
+/**
+ The arguments to be passed to the launched task.
+ */
+@property (copy, nullable) NSArray<NSString *> *arguments;
 
-@property (readonly) NSFileHandle *outputFileHandle;
+/**
+ The current working directory for the launched task.
+ 
+ @warning This changes the current working directory for the entire process, not just the task.
+ It is not thread-safe and can lead to unexpected behavior.
+ */
+@property (copy, nullable) NSString *currentDirectoryPath;
+
+/**
+ The path to the executable to be launched.
+ */
+@property (copy, nullable) NSString *launchPath;
+
+/**
+ A file handle for reading the output of the launched task.
+ */
+@property (readonly, strong, nullable) NSFileHandle *outputFileHandle;
+
+/**
+ A Boolean value indicating whether the task is currently running.
+ */
 @property (readonly) BOOL isRunning;
+
+/**
+ The process identifier of the launched task.
+ 
+ @warning This is not a reliable way to get the process identifier.
+ It is retrieved using a trick that may not work in all cases.
+ */
 @property (readonly) pid_t processIdentifier;
+
+/**
+ The termination status of the launched task.
+ */
 @property (readonly) int terminationStatus;
 
-@property (copy) void (^terminationHandler)(STPrivilegedTask *);
+/**
+ A block to be executed when the task terminates.
+ */
+@property (copy, nullable) void (^terminationHandler)(STPrivilegedTask *);
 
+/**
+ Checks if the underlying `AuthorizationExecuteWithPrivileges` function is available.
+ 
+ @return `YES` if the function is available, `NO` otherwise.
+ */
 + (BOOL)authorizationFunctionAvailable;
-    
+
+/**
+ Initializes a new `STPrivilegedTask` with the specified launch path.
+ 
+ @param path The path to the executable to be launched.
+ @return An initialized `STPrivilegedTask` object.
+ */
 - (instancetype)initWithLaunchPath:(NSString *)path;
-- (instancetype)initWithLaunchPath:(NSString *)path arguments:(NSArray *)args;
-- (instancetype)initWithLaunchPath:(NSString *)path arguments:(NSArray *)args currentDirectory:(NSString *)cwd;
 
+/**
+ Initializes a new `STPrivilegedTask` with the specified launch path and arguments.
+ 
+ @param path The path to the executable to be launched.
+ @param args An array of strings representing the arguments to be passed to the task.
+ @return An initialized `STPrivilegedTask` object.
+ */
+- (instancetype)initWithLaunchPath:(NSString *)path arguments:(nullable NSArray<NSString *> *)args;
+
+/**
+ Initializes a new `STPrivilegedTask` with the specified launch path, arguments, and current directory.
+ 
+ @param path The path to the executable to be launched.
+ @param args An array of strings representing the arguments to be passed to the task.
+ @param cwd The current working directory for the task.
+ @return An initialized `STPrivilegedTask` object.
+ */
+- (instancetype)initWithLaunchPath:(NSString *)path arguments:(nullable NSArray<NSString *> *)args currentDirectory:(nullable NSString *)cwd;
+
+/**
+ Creates and launches a new privileged task with the specified launch path.
+ 
+ @param path The path to the executable to be launched.
+ @return An `STPrivilegedTask` object for the launched task.
+ */
 + (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path;
-+ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args;
-+ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args currentDirectory:(NSString *)cwd;
-+ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args currentDirectory:(NSString *)cwd authorization:(AuthorizationRef)authorization;
 
+/**
+ Creates and launches a new privileged task with the specified launch path and arguments.
+ 
+ @param path The path to the executable to be launched.
+ @param args An array of strings representing the arguments to be passed to the task.
+ @return An `STPrivilegedTask` object for the launched task.
+ */
++ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(nullable NSArray<NSString *> *)args;
+
+/**
+ Creates and launches a new privileged task with the specified launch path, arguments, and current directory.
+ 
+ @param path The path to the executable to be launched.
+ @param args An array of strings representing the arguments to be passed to the task.
+ @param cwd The current working directory for the task.
+ @return An `STPrivilegedTask` object for the launched task.
+ */
++ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(nullable NSArray<NSString *> *)args currentDirectory:(nullable NSString *)cwd;
+
+/**
+ Creates and launches a new privileged task with the specified launch path, arguments, current directory, and authorization.
+ 
+ @param path The path to the executable to be launched.
+ @param args An array of strings representing the arguments to be passed to the task.
+ @param cwd The current working directory for the task.
+ @param authorization An `AuthorizationRef` to use for the task.
+ @return An `STPrivilegedTask` object for the launched task.
+ */
++ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(nullable NSArray<NSString *> *)args currentDirectory:(nullable NSString *)cwd authorization:(AuthorizationRef)authorization;
+
+/**
+ Launches the task.
+ 
+ @return An `OSStatus` code indicating the result of the launch operation.
+ */
 - (OSStatus)launch;
+
+/**
+ Launches the task with the specified authorization.
+ 
+ @param authorization An `AuthorizationRef` to use for the task.
+ @return An `OSStatus` code indicating the result of the launch operation.
+ */
 - (OSStatus)launchWithAuthorization:(AuthorizationRef)authorization;
-- (void)terminate; // doesn't work
+
+/**
+ Waits until the task has completed.
+ */
 - (void)waitUntilExit;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

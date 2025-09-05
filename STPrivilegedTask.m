@@ -249,15 +249,6 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization,
     return err;
 }
 
-- (void)terminate {
-    // This doesn't work without a PID, and we can't get one. Stupid Security API.
-//    int ret = kill(pid, SIGKILL);
-//     
-//    if (ret != 0) {
-//        NSLog(@"Error %d", errno);
-//    }
-}
-
 // Hang until task is done
 - (void)waitUntilExit {
     if (!_isRunning) {
