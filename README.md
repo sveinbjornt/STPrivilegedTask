@@ -207,7 +207,7 @@ It waits for the script to finish and then shows the output in a window, along w
 
 ## BSD License 
 
-Copyright (c) 2008-2023 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
+Copyright (c) 2008-2025 Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
