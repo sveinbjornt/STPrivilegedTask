@@ -1,17 +1,17 @@
-name: CI
+name: build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "*" ]
 
 jobs:
   build:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Build
       run: xcodebuild -project PrivilegedTaskExample/PrivilegedTaskExample.xcodeproj -scheme PrivilegedTaskExample build
