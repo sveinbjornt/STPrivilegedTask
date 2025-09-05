@@ -18,7 +18,6 @@
 
 /* Begin PBXFileReference section */
 		F42EA3F020499D760047D070 /* unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlocked.png; sourceTree = "<group>"; };
-		F4745B022E6B6B990061C21A /* ci.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = ci.yml; sourceTree = "<group>"; };
 		F4C19A701BD1963900F411BD /* script.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = script.sh; sourceTree = "<group>"; };
 		F4E5E4001EE2953E0072EACE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		F4F103571B5155A200BCAD40 /* PrivilegedTaskExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrivilegedTaskExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,7 +58,6 @@
 		F4F1034E1B5155A200BCAD40 = {
 			isa = PBXGroup;
 			children = (
-				F4745B022E6B6B990061C21A /* ci.yml */,
 				F4F1037E1B51664C00BCAD40 /* README.md */,
 				F4F103811B516A3500BCAD40 /* STPrivilegedTask.podspec */,
 				F4F1037D1B51663800BCAD40 /* STPrivilegedTask */,

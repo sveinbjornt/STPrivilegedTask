@@ -1,8 +1,9 @@
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![macOS](https://img.shields.io/badge/macOS-000000?style=flat&logo=apple&logoColor=white)]()
+[![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Language](https://img.shields.io/badge/language-objective--c-lightgrey)]()
 [![Release](https://shields.io/github/v/release/sveinbjornt/STPrivilegedTask?display_name=tag)]()
 [![CocoaPods](https://img.shields.io/cocoapods/v/STPrivilegedTask.svg)](https://img.shields.io/cocoapods/v/STPrivilegedTask.svg)
-
+[![build](https://github.com/sveinbjornt/STPrivilegedTask/actions/workflows/build.yml/badge.svg)]()
 
 # STPrivilegedTask
 
@@ -12,7 +13,7 @@ function in the macOS Security API to run shell commands with root privileges.
 Implemented in Objective-C.
 
 STPrivilegedTask was created a *very long time ago* (~2005) and has a long history. It has been
-updated over the years to work with the latest versions of macOS (macOS 13 "Ventura" as of writing)
+updated over the years to work with the latest versions of **macOS** (macOS 15 "Sequoia" as of writing)
 and is available via [CocoaPods](https://cocoapods.org). It relies on a native system function that
 has been deprecated since Mac OS X 10.7 "Lion" (2011) and will fail gracefully if the function is
 not available in a future version of the operating system. That being said, *caveat emptor!*
@@ -22,7 +23,7 @@ not available in a future version of the operating system. That being said, *cav
 Add the following to your `Podfile` target's dependencies:
 
 ```ruby
-    pod 'STPrivilegedTask', '~> 1.0.8'
+    pod 'STPrivilegedTask', '~> 1.0.9'
 ```
 
 ...or just download the two `STPrivileged.*` source files and include them directly in your project.
@@ -119,6 +120,7 @@ NSFileHandle *readHandle = [privilegedTask outputFileHandle];
         [[aNotification object] readInBackgroundAndNotify];
     } else {
         // Do something else
+        NSLog("Empty output");
     }
 }
 ```
@@ -160,8 +162,8 @@ privilegedTask.terminationHandler = ^(STPrivilegedTask *privilegedTask) {
 ###  AuthorizationExecuteWithPrivileges() is deprecated
 
 [AuthorizationExecuteWithPrivileges()](https://developer.apple.com/library/mac/documentation/Security/Reference/authorization_ref/#//apple_ref/c/func/AuthorizationExecuteWithPrivileges)
-is deprecated as of macOS 10.7 but still remains available in macOS 13 "Ventura". If you want to be 
-future-proof, here's how you check if STPrivilegedTask works in the running version of macOS:
+is deprecated as of macOS 10.7 but still remains available in macOS 15 "Sequoia". If you want to be 
+future-proof, here's how to check if STPrivilegedTask works in the running version of macOS:
 
 ```objective-c
 // ...create privilegedTask object
