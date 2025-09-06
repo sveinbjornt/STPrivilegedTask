@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage     = "http://github.com/sveinbjornt/STPrivilegedTask"
   s.license      = { :type => 'BSD' }
   s.author       = { "Sveinbjorn Thordarson" => "sveinbjorn@sveinbjorn.org" }
-  s.osx.deployment_target = "10.8"
+  s.osx.deployment_target = "10.9"
   s.source       = { :git => "https://github.com/sveinbjornt/STPrivilegedTask.git", :tag => "1.0.9" }
   s.source_files = "STPrivilegedTask.{h,m}"
   s.exclude_files = "PrivilegedTaskExample"

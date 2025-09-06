@@ -65,8 +65,7 @@ else {
 // if your program does other things while the task is running.
 
 ```
-See [Authorization.h](http://www.opensource.apple.com/source/libsecurity_authorization/libsecurity_authorization-36329/lib/Authorization.h)
-for a list of possible error codes.
+See Apple's Authorization Framework documentation and header files for a list of possible error codes.
 
 ### Launch task one-liner
 
